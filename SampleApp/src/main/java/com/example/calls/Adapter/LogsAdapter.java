@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.RequiresPermission;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,12 +33,13 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder>{
+public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder> {
     private List<LogObject> logs;
     private List<Integer> CountList;
     private Context context;
     private int resource;
-    static class ViewHolder extends  RecyclerView.ViewHolder{
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
         View logView;
         CardView phoneLog;
         TextView phone;
@@ -45,6 +48,7 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder>{
         TextView count;
         ImageView imageView;
         Button button;
+
         public ViewHolder(View row) {
             super(row);
             logView = row;
@@ -58,7 +62,7 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder>{
         }
     }
 
-    public LogsAdapter(List<LogObject> calllLogs){
+    public LogsAdapter(List<LogObject> calllLogs) {
         this.CountList = new LinkedList<Integer>();
         this.logs = new LinkedList<LogObject>();
         LogsAggregation(calllLogs);
@@ -72,14 +76,19 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder>{
                 .inflate(R.layout.log_layout, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         //设置点击效果card拨号
-        holder.logView.setOnClickListener(new View.OnClickListener(){
+        holder.logView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                String tel = "tel:"+logs.get(position).getNumber();
-                Intent dail = new Intent(Intent.ACTION_DIAL);
-                dail.setData(Uri.parse(tel));
-                context.startActivity(dail);
+                String tel = "tel:" + logs.get(position).getNumber();
+                Intent call = new Intent(Intent.ACTION_CALL);
+                call.setData(Uri.parse(tel));
+
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(context, "You denied the Call Permission",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                context.startActivity(call);
 
 
             }

@@ -44,7 +44,7 @@ public class FragmentCalllogs extends Fragment {
     private RecyclerView logListView;
     private LogsAdapter adapter;
     private Runnable logsRunnable;
-    private String[] requiredPermissions = {Manifest.permission.READ_CALL_LOG, Manifest.permission.READ_CONTACTS};
+    private String[] requiredPermissions = {Manifest.permission.READ_CALL_LOG, Manifest.permission.READ_CONTACTS,Manifest.permission.CALL_PHONE};
     private View view;
     private static final String TAG = "FragmentCalllogs";
 
@@ -97,8 +97,8 @@ public class FragmentCalllogs extends Fragment {
 
         boolean logs = ContextCompat.checkSelfPermission(getActivity(), permissions[0]) != PackageManager.PERMISSION_GRANTED;
         boolean contacts = ContextCompat.checkSelfPermission(getActivity(), permissions[1]) != PackageManager.PERMISSION_GRANTED;
-
-        if (logs || contacts) {
+        boolean call = ContextCompat.checkSelfPermission(getActivity(), permissions[2]) != PackageManager.PERMISSION_GRANTED;
+        if (logs || contacts|| call) {
             requestPermissions(permissions, requestCode);
         } else {
             runnable.run();
@@ -111,8 +111,9 @@ public class FragmentCalllogs extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == READ_LOGS && permissions[0].equals(Manifest.permission.READ_CALL_LOG) && permissions[1].equals(Manifest.permission.READ_CONTACTS)) {
-            if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED && grantResults[1] == PermissionChecker.PERMISSION_GRANTED) {
+        if (requestCode == READ_LOGS && permissions[0].equals(Manifest.permission.READ_CALL_LOG) && permissions[1].equals(Manifest.permission.READ_CONTACTS)&&
+                permissions[2].equals(Manifest.permission.CALL_PHONE)) {
+            if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED && grantResults[1] == PermissionChecker.PERMISSION_GRANTED && grantResults[2] == PermissionChecker.PERMISSION_GRANTED) {
                 logsRunnable.run();
             } else {
                 new AlertDialog.Builder(getActivity())
