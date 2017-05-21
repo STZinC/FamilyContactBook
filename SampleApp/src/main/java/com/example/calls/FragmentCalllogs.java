@@ -82,6 +82,7 @@ public class FragmentCalllogs extends Fragment {
         logListView.setAdapter(adapter);
 
     }
+
     @Override
     public void onResume(){
         super.onResume();
