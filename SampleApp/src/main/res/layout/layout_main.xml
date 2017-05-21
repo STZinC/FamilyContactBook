@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/fragment_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/mViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+
+            <RadioGroup
+                android:id="@+id/group"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom"
+                android:layout_weight="0"
+                android:background="@color/colorPrimary">
+                <RadioButton
+                    android:id="@+id/button_calllogs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/radio_bg"
+                    android:button="@null"
+                    android:padding="10dip"
+                    android:text="@string/calllogs"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+                <RadioButton
+                    android:id="@+id/button_contacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:background="@drawable/radio_bg"
+                    android:button="@null"
+                    android:padding="10dip"
+                    android:text="@string/contacts"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+
+            </RadioGroup>
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
+
