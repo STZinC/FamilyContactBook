@@ -48,13 +48,13 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.ViewHolder>{
         public ViewHolder(View row) {
             super(row);
             logView = row;
-            CardView phoneLog = (CardView) row.findViewById(R.id.phoneNumLog);
-            TextView phone = (TextView) row.findViewById(R.id.phoneNum);
-            TextView duration = (TextView) row.findViewById(R.id.callDuration);
-            TextView date = (TextView) row.findViewById(R.id.callDate);
-            TextView count = (TextView) row.findViewById(R.id.phoneNumCounts);
-            final ImageView imageView = (ImageView) row.findViewById(R.id.callImage);
-            Button button = (Button) row.findViewById(R.id.button);
+            phoneLog = (CardView) row.findViewById(R.id.phoneNumLog);
+            phone = (TextView) row.findViewById(R.id.phoneNum);
+            duration = (TextView) row.findViewById(R.id.callDuration);
+            date = (TextView) row.findViewById(R.id.callDate);
+            count = (TextView) row.findViewById(R.id.phoneNumCounts);
+            imageView = (ImageView) row.findViewById(R.id.callImage);
+            button = (Button) row.findViewById(R.id.button);
         }
     }
 

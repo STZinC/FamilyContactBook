@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~ Copyright (C) 2016 WickerLabs. inc - All Rights Reserved.                                     ~
+~                                                                                               ~
+~ NOTICE:  All information contained herein is, and remains the property of WickerLabs,         ~
+~ The intellectual and technical concepts contained herein are proprietary to WickerLabs.       ~
+~ Dissemination of this information or reproduction of this material                            ~
+~ is strictly forbidden unless prior permission is obtained from WickerLabs. inc                ~
+~                                                                                               ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
