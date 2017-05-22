@@ -23,6 +23,9 @@ import com.example.calls.ContactDetailActivity;
 import com.example.calls.People;
 import com.example.calls.R;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +34,7 @@ import java.util.List;
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder>{
     private Context mContext;
-    private List<People> mPeopleList;
+    private ArrayList<People> mPeopleList;
     static class ViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
         TextView peopleName;
@@ -47,8 +50,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         }
     }
 
-    public PeopleAdapter(List<People> peopleList){
+    public PeopleAdapter(ArrayList<People> peopleList){
         mPeopleList = peopleList;
+        if(mPeopleList==null){
+            mPeopleList = new ArrayList<People>();
+        }
+        Collections.sort(mPeopleList);
     }
 
     @Override
