@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 public class ContactDetailActivity extends AppCompatActivity {
     private MyDataBaseHelper dbHelper;
+    String index;
     Integer id;
 
     @Override
@@ -32,31 +33,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_contact_detail);
         setSupportActionBar(toolbar);
         setTitle("Contacts");
-        dbHelper = new MyDataBaseHelper(this,"PeopleStore.db",null,1);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        Intent intent = getIntent();
-        id = intent.getIntExtra("id",1);
-        Cursor qcursor = db.rawQuery("select * from People where id = ?",
-                new String[]{id.toString()});
-        qcursor.moveToFirst();
-        String name = qcursor.getString(qcursor.getColumnIndex("name"));
-        String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
-        String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
-        ImageView avatorView = (ImageView) findViewById(R.id.contact_detail_avatar);
-        TextView nameView = (TextView) findViewById(R.id.contact_detail_name);
-        TextView phoneView = (TextView) findViewById(R.id.contact_detail_phone_number);
-        TextView relationshipView = (TextView) findViewById(R.id.contact_detail_relationship);
-        int resID = R.drawable.avatar_boy;//getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
-        avatorView.setImageResource(resID);
-
-
-        nameView.setText(name);
-        phoneView.setText(phone);
-        relationshipView.setText(relationship);
-        //phoneView.setVisibility(View.INVISIBLE);
-        qcursor.close();
-
+        iniData();
     }
 
     @Override
@@ -80,6 +57,77 @@ public class ContactDetailActivity extends AppCompatActivity {
             default:
         }
         return true;
+    }
+
+    private void iniData(){
+        dbHelper = new MyDataBaseHelper(this,"PeopleStore.db",null,1);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Intent intent = getIntent();
+        index = intent.getStringExtra("index");
+        String firstFourChar = index;
+
+        if(index.length()>=4) {
+            firstFourChar = index.substring(0, 4);
+        }
+
+        if(firstFourChar.equals("TEL:")){
+            String phoneNumber = index.substring(4);
+            Cursor qcursor = db.rawQuery("select * from People where phoneNumber1 = ?",
+                    new String[]{phoneNumber});
+            //If there exist such phone number in the database.
+            if(qcursor.moveToFirst()){
+                String name = qcursor.getString(qcursor.getColumnIndex("name"));
+                String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
+                String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
+                ImageView avatorView = (ImageView) findViewById(R.id.contact_detail_avatar);
+                TextView nameView = (TextView) findViewById(R.id.contact_detail_name);
+                TextView phoneView = (TextView) findViewById(R.id.contact_detail_phone_number);
+                TextView relationshipView = (TextView) findViewById(R.id.contact_detail_relationship);
+                int resID = R.drawable.avatar_boy;//getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
+                avatorView.setImageResource(resID);
+                nameView.setText(name);
+                phoneView.setText(phone);
+                relationshipView.setText(relationship);
+                qcursor.close();
+            }
+            else{
+                qcursor.close();
+                Unknown();
+            }
+
+        }
+        else {
+            id = Integer.parseInt(index);
+            Cursor qcursor = db.rawQuery("select * from People where id = ?",
+                    new String[]{id.toString()});
+            qcursor.moveToFirst();
+            String name = qcursor.getString(qcursor.getColumnIndex("name"));
+            String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
+            String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
+            ImageView avatorView = (ImageView) findViewById(R.id.contact_detail_avatar);
+            TextView nameView = (TextView) findViewById(R.id.contact_detail_name);
+            TextView phoneView = (TextView) findViewById(R.id.contact_detail_phone_number);
+            TextView relationshipView = (TextView) findViewById(R.id.contact_detail_relationship);
+            int resID = R.drawable.avatar_boy;//getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
+            avatorView.setImageResource(resID);
+            nameView.setText(name);
+            phoneView.setText(phone);
+            relationshipView.setText(relationship);
+            qcursor.close();
+        }
+    }
+
+    private void Unknown(){
+        ImageView avatorView = (ImageView) findViewById(R.id.contact_detail_avatar);
+        TextView nameView = (TextView) findViewById(R.id.contact_detail_name);
+        TextView phoneView = (TextView) findViewById(R.id.contact_detail_phone_number);
+        TextView relationshipView = (TextView) findViewById(R.id.contact_detail_relationship);
+        int resID = R.drawable.avatar_boy;//getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
+        avatorView.setImageResource(resID);
+        nameView.setText("Unknown");
+        phoneView.setText(index.substring(4));
+        relationshipView.setText("");
+
     }
 
 

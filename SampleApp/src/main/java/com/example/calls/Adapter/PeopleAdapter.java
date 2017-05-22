@@ -24,9 +24,7 @@ import com.example.calls.People;
 import com.example.calls.R;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by yanyangma on 07/05/2017.
@@ -71,10 +69,10 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                 int position = holder.getAdapterPosition();
                 Context c = v.getContext();
                 People people = mPeopleList.get(position);
-                int id = people.getId();
+                Integer id = people.getId();
 //                Toast.makeText(c, "You click: "+id,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(v.getContext(),ContactDetailActivity.class);
-                intent.putExtra("id",id);
+                intent.putExtra("index",id.toString());
                 c.startActivity(intent);
             }
         });
