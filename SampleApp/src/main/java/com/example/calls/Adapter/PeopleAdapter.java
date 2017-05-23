@@ -23,8 +23,7 @@ import com.example.calls.ContactDetailActivity;
 import com.example.calls.People;
 import com.example.calls.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by yanyangma on 07/05/2017.
@@ -32,7 +31,7 @@ import java.util.Collections;
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder>{
     private Context mContext;
-    private ArrayList<People> mPeopleList;
+    private List<People> mPeopleList;
     static class ViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
         TextView peopleName;
@@ -48,12 +47,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         }
     }
 
-    public PeopleAdapter(ArrayList<People> peopleList){
+    public PeopleAdapter(List<People> peopleList){
         mPeopleList = peopleList;
-        if(mPeopleList==null){
-            mPeopleList = new ArrayList<People>();
-        }
-        Collections.sort(mPeopleList);
     }
 
     @Override
@@ -69,10 +64,10 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                 int position = holder.getAdapterPosition();
                 Context c = v.getContext();
                 People people = mPeopleList.get(position);
-                Integer id = people.getId();
+                int id = people.getId();
 //                Toast.makeText(c, "You click: "+id,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(v.getContext(),ContactDetailActivity.class);
-                intent.putExtra("index",id.toString());
+                intent.putExtra("id",id);
                 c.startActivity(intent);
             }
         });

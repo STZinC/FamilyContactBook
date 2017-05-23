@@ -7,5 +7,3 @@ Acknowledgements
 
 >Using some API develop by
 [wickerlabs](https://github.com/wickerlabs/CallLogs)
-
->Coworker [SherlockSheep](https://github.com/SherlockSheep)

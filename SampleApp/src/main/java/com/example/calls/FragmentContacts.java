@@ -44,7 +44,7 @@ import java.util.List;
 
 public class FragmentContacts extends Fragment {
 
-    private ArrayList<People> peopleList = new ArrayList<>();
+    private List<People> peopleList = new ArrayList<>();
     private PeopleAdapter adapter;
     private DrawerLayout mDrawerLayout;
     private MyDataBaseHelper dbHelper;
@@ -122,9 +122,7 @@ public class FragmentContacts extends Fragment {
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 String phoneNumber1 = cursor.getString(cursor.getColumnIndex("phoneNumber1"));
                 int id = cursor.getInt(cursor.getColumnIndex("id"));
-                People person = new People(name,phoneNumber1,id);
-                person.setPinyin(HanziToPinyin.getPinYin(person.getName()));
-                peopleList.add(person);
+                peopleList.add(new People(name,phoneNumber1,id));
             }while(cursor.moveToNext());
         }
         cursor.close();
