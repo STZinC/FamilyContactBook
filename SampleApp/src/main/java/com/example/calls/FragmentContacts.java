@@ -88,6 +88,7 @@ public class FragmentContacts extends Fragment {
         inflater.inflate(R.menu.toolbar,menu);
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){

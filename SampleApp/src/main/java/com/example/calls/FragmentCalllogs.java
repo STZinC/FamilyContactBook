@@ -39,7 +39,7 @@ import java.util.List;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class FragmentCalllogs extends Fragment {
     //设置读取log数量的上限检查权限等
-    private static final int READ_LOGS = 725;
+    private static final int READ_LOGS = 100;
     private List<LogObject> callLogs;
     private RecyclerView logListView;
     private LogsAdapter adapter;
