@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
+        Log.d("MainActivity","Start service");
+        startIntent = new Intent(this,BlackNumberService.class);
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) !=
                 PackageManager.PERMISSION_GRANTED){
@@ -76,8 +78,8 @@ public class MainActivity extends AppCompatActivity{
         mGroup = (RadioGroup) findViewById(R.id.group);
         mGroup.setOnCheckedChangeListener(new CheckedChangeListener());
         mGroup.check(R.id.button_calllogs);
-        startIntent = new Intent(this,BlackNumberService.class);
-        Log.d("MainActivity","Start service");
+
+
 
     }
     @Override
