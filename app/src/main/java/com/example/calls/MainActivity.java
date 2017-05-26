@@ -55,11 +55,15 @@ public class MainActivity extends AppCompatActivity{
         Log.d("MainActivity","Start service");
         startIntent = new Intent(this,BlackNumberService.class);
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) !=
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) !=
                 PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_PHONE_STATE}, 3);
-        } else {
+                    new String[]{Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_CONTACTS,
+                            Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE}, 1);
+        }
+
+        else {
+            Log.d("MainActivity","Start service");
             startService(startIntent);
         }
 
@@ -86,13 +90,21 @@ public class MainActivity extends AppCompatActivity{
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults){
         switch(requestCode){
-            case 3:
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            case 1:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        &&grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        &&grantResults[2] == PackageManager.PERMISSION_GRANTED
+                        &&grantResults[3] == PackageManager.PERMISSION_GRANTED){
+                    Log.d("MainActivity","Start service");
                     startService(startIntent);
+
                 }else{
-                    Toast.makeText(this, "You denied the permission",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "You denied the permission 1",Toast.LENGTH_SHORT).show();
+                    Log.d("Permission:","You denied the permission 1");
+                    finish();
                 }
                 break;
+
             default:
         }
     }
