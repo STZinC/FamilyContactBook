@@ -63,8 +63,8 @@ public class AddEditContactActivity extends AppCompatActivity {
         String Name = editName.getText().toString();
         String PhoneNumber = editPhoneNumber.getText().toString();
         String RelationShip = editRelationship.getText().toString();
-        db.execSQL("insert into People (name, phoneNumber1, relationship) values(?,?,?)",
-                new String[] {Name,PhoneNumber,RelationShip});
+        db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
+                new String[] {Name,PhoneNumber,RelationShip,"1"});
 
     }
 

@@ -32,7 +32,8 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
             + "phoneLocation text,"
             + "Location text,"
             + "extra text,"
-            + "photoId integer)";
+            + "photoId integer,"
+            + "isBlack integer)";
 
     private Context mContext;
 
@@ -52,4 +53,6 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists People");
         onCreate(db);
     }
+
+
 }

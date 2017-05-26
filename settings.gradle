@@ -1,1 +1,1 @@
-include ':SampleApp', ':logmanager'
+include ':app', ':logmanager'

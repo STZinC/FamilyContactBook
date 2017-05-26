@@ -9,11 +9,15 @@
  **************************************************************************************************/
 package com.example.calls;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -43,10 +47,19 @@ public class MainActivity extends AppCompatActivity{
     private RadioGroup mGroup;
     private ViewPager mPager;
     private static final String TAG = "MainActivity";
+    private Intent startIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) !=
+                PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE}, 3);
+        } else {
+            startService(startIntent);
+        }
 
         //construct Adapter
 
@@ -63,8 +76,23 @@ public class MainActivity extends AppCompatActivity{
         mGroup = (RadioGroup) findViewById(R.id.group);
         mGroup.setOnCheckedChangeListener(new CheckedChangeListener());
         mGroup.check(R.id.button_calllogs);
+        startIntent = new Intent(this,BlackNumberService.class);
+        Log.d("MainActivity","Start service");
 
-
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults){
+        switch(requestCode){
+            case 3:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    startService(startIntent);
+                }else{
+                    Toast.makeText(this, "You denied the permission",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
     }
 
 

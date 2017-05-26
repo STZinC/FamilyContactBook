@@ -136,7 +136,7 @@ public class FragmentContacts extends Fragment {
         if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS) !=
                 PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.READ_CONTACTS}, 1);
+                    new String[]{Manifest.permission.READ_CONTACTS}, 4);
         } else {
             importFromSystemBegin();
         }
@@ -146,7 +146,7 @@ public class FragmentContacts extends Fragment {
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults){
         switch(requestCode){
-            case 1:
+            case 4:
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     importFromSystemBegin();
                 }else{
@@ -177,8 +177,8 @@ public class FragmentContacts extends Fragment {
                         qcursor.close();
                     }else {
                         qcursor.close();
-                        db.execSQL("insert into People (name,phoneNumber1) values(?,?)",
-                                new String[]{Name, Number});
+                        db.execSQL("insert into People (name,phoneNumber1,isBlack) values(?,?,?)",
+                                new String[]{Name, Number,"0"});
                         newcontact = true;
                     }
                 }
