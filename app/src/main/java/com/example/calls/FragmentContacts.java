@@ -177,8 +177,8 @@ public class FragmentContacts extends Fragment {
                         qcursor.close();
                     }else {
                         qcursor.close();
-                        db.execSQL("insert into People (name,phoneNumber1,isBlack) values(?,?,?)",
-                                new String[]{Name, Number,"0"});
+                        db.execSQL("insert into People (name,phoneNumber1,isBlack,relationship) values(?,?,?,?)",
+                                new String[]{Name, Number,"0","无"});
                         newcontact = true;
                     }
                 }

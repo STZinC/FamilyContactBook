@@ -17,11 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 public class AddEditContactActivity extends AppCompatActivity {
     private EditText editName;
     private EditText editPhoneNumber;
-    private EditText editRelationship;
+    private Spinner editRelationship;
     private MyDataBaseHelper dbHelper;
     Integer id;
 
@@ -37,7 +38,7 @@ public class AddEditContactActivity extends AppCompatActivity {
         avatorView.setImageResource(R.drawable.avatar_boy);
         editName = (EditText) findViewById(R.id.edit_name);
         editPhoneNumber = (EditText) findViewById(R.id.edit_phone_number);
-        editRelationship = (EditText) findViewById(R.id.edit_relationship);
+        editRelationship = (Spinner) findViewById(R.id.edit_relationship);
         dbHelper = new MyDataBaseHelper(this,"PeopleStore.db",null,1);
     }
     @Override
@@ -62,9 +63,9 @@ public class AddEditContactActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String Name = editName.getText().toString();
         String PhoneNumber = editPhoneNumber.getText().toString();
-        String RelationShip = editRelationship.getText().toString();
+        String RelationShip = editRelationship.getSelectedItem().toString();
         db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
-                new String[] {Name,PhoneNumber,RelationShip,"1"});
+                new String[] {Name,PhoneNumber,RelationShip,"0"});
 
     }
 

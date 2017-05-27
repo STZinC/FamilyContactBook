@@ -108,14 +108,13 @@
                         android:textColor="@color/colorKeyText"
                         android:textSize="20sp" />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/edit_relationship"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:textSize="20sp"
-                        android:maxLines="1"
-                        android:hint="请输入亲属关系"/>
+                        android:entries="@array/relationship"/>
 
                     <TextView
                         android:layout_width="match_parent"
