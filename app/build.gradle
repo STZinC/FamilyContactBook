@@ -4,7 +4,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
     defaultConfig {
-        applicationId 'com.wickerlabs.logmanager'
+        applicationId 'com.yanyangma.FamilyPhoneBook'
         minSdkVersion 10
         targetSdkVersion 24
         versionCode 2
