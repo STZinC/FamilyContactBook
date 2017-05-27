@@ -40,100 +40,103 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <LinearLayout
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="8dp">
 
-                    <com.example.calls.SquareLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/add_contact_avatar"
+                        <com.example.calls.SquareLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </com.example.calls.SquareLayout>
+                            android:layout_height="0dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="10dp"
-                        android:text="姓名"
-                        android:textColor="@color/colorKeyText"
-                        android:textSize="20sp"/>
+                            <ImageView
+                                android:id="@+id/add_contact_avatar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </com.example.calls.SquareLayout>
 
-                    <EditText
-                        android:id="@+id/edit_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="20sp"
-                        android:maxLines="1"
-                        android:hint="请输入姓名" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="姓名"
+                            android:textColor="@color/colorKeyText"
+                            android:textSize="20sp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="10dp"
-                        android:text="手机"
-                        android:textColor="@color/colorKeyText"
-                        android:textSize="20sp" />
+                        <EditText
+                            android:id="@+id/edit_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="20sp"
+                            android:maxLines="1"
+                            android:hint="请输入姓名" />
 
-                    <EditText
-                        android:id="@+id/edit_phone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="20sp"
-                        android:maxLines="1"
-                        android:hint="请输入手机号码" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="手机"
+                            android:textColor="@color/colorKeyText"
+                            android:textSize="20sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="20dp"
-                        android:text="亲属关系"
-                        android:textColor="@color/colorKeyText"
-                        android:textSize="20sp" />
+                        <EditText
+                            android:id="@+id/edit_phone_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="20sp"
+                            android:maxLines="1"
+                            android:hint="请输入手机号码" />
 
-                    <Spinner
-                        android:id="@+id/edit_relationship"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="20sp"
-                        android:entries="@array/relationship"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="20dp"
+                            android:text="亲属关系"
+                            android:textColor="@color/colorKeyText"
+                            android:textSize="20sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="20dp"
-                        android:text="归属地"
-                        android:textColor="@color/colorKeyText"
-                        android:textSize="20sp" />
+                        <Spinner
+                            android:id="@+id/edit_relationship"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="20sp"
+                            android:entries="@array/relationship"/>
 
-                    <TextView
-                        android:id="@+id/contact_detail_phone_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="20sp" />
-                    <!---->
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="20dp"
+                            android:text="归属地"
+                            android:textColor="@color/colorKeyText"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/contact_detail_phone_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="20sp" />
+                        <!---->
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
 

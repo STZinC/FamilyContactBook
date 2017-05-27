@@ -5,6 +5,8 @@
 
     <string-array name="relationship">
         <item>无</item>
+        <item>妻子</item>
+        <item>丈夫</item>
         <item>爸爸</item>
         <item>妈妈</item>
         <item>爷爷</item>
@@ -19,6 +21,11 @@
         <item>婶婶</item>
         <item>姨妈</item>
         <item>姨夫</item>
+        <item>姑姑</item>
+        <item>姑父</item>
+        <item>舅舅</item>
+        <item>舅妈</item>
+        <item>其它</item>
     </string-array>
 
 </resources>

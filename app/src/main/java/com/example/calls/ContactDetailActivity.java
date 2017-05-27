@@ -38,7 +38,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_contact_detail);
         setSupportActionBar(toolbar);
-        setTitle("Contacts");
+        setTitle("联系人");
         avatorView = (ImageView) findViewById(R.id.contact_detail_avatar);
         nameView = (TextView) findViewById(R.id.contact_detail_name);
         phoneView = (TextView) findViewById(R.id.contact_detail_phone_number);
@@ -62,8 +62,10 @@ public class ContactDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "Delete succeeded", Toast.LENGTH_SHORT).show();
                 finish();
             case R.id.edit_contact_detail:
-//                Intent intent = new Intent(this,AddEditContactActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(this,AddEditContactActivity.class);
+                intent.putExtra("index",id.toString());
+                startActivity(intent);
+                finish();
                 break;
             default:
         }
