@@ -37,7 +37,9 @@
         <service
             android:name=".BlackNumberService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".BlackListActivity"></activity>
     </application>
 
 </manifest>

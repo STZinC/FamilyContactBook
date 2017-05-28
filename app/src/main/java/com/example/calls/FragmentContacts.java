@@ -99,8 +99,10 @@ public class FragmentContacts extends Fragment {
                 Intent intent = new Intent(getContext(),AddEditContactActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.settings:
-                Toast.makeText(getContext(),"You clicked Settings",Toast.LENGTH_SHORT).show();
+            case R.id.black_list:
+                Toast.makeText(getContext(),"Black List",Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(getContext(),BlackListActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.import_from_system:
                 importFromSystem();

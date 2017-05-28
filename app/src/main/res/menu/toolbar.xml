@@ -14,13 +14,13 @@
         app:showAsAction="ifRoom"
         />
     <item
-        android:title="Settings"
-        android:id="@+id/settings"
+        android:title="黑名单"
+        android:id="@+id/black_list"
         android:icon="@drawable/ic_settings_white_36dp"
         app:showAsAction="never"
         />
     <item
-        android:title="Import from system"
+        android:title="从系统通讯录导入"
         android:id="@+id/import_from_system"
         android:icon="@drawable/ic_settings_white_36dp"
         app:showAsAction="never"
