@@ -103,9 +103,15 @@ public class AddEditContactActivity extends AppCompatActivity {
         String Name = editName.getText().toString();
         String PhoneNumber = editPhoneNumber.getText().toString();
         String RelationShip = editRelationship.getSelectedItem().toString();
-        db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
-                new String[] {Name,PhoneNumber,RelationShip,"0"});
-        Toast.makeText(this,"添加成功",Toast.LENGTH_SHORT).show();
+        if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
+            db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
+                    new String[]{Name, PhoneNumber, RelationShip, "0"});
+            Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+
+        }
+        else{
+            Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -114,9 +120,14 @@ public class AddEditContactActivity extends AppCompatActivity {
         String Name = editName.getText().toString();
         String PhoneNumber = editPhoneNumber.getText().toString();
         String RelationShip = editRelationship.getSelectedItem().toString();
-        db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ? where id = ?",
-                new String[] {Name,PhoneNumber,RelationShip,index.toString()});
-        Toast.makeText(this,"修改成功",Toast.LENGTH_SHORT).show();
+        if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
+            db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ? where id = ?",
+                    new String[]{Name, PhoneNumber, RelationShip, index.toString()});
+            Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "修改失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
