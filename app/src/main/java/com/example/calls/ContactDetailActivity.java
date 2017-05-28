@@ -61,6 +61,7 @@ public class ContactDetailActivity extends AppCompatActivity {
                 db.execSQL("delete from People where id = ?",new String[]{id.toString()});
                 Toast.makeText(this, "Delete succeeded", Toast.LENGTH_SHORT).show();
                 finish();
+                break;
             case R.id.edit_contact_detail:
                 Intent intent = new Intent(this,AddEditContactActivity.class);
                 intent.putExtra("index",id.toString());

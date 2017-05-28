@@ -115,7 +115,7 @@
                             android:id="@+id/move_to_out_black"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="#4caf50"
+                            android:backgroundTint="#006400"
                             android:text="加入黑名单"
                             android:layout_margin="10dp"
                             android:textStyle="bold"

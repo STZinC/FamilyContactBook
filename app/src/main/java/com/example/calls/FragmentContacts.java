@@ -100,7 +100,6 @@ public class FragmentContacts extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.black_list:
-                Toast.makeText(getContext(),"Black List",Toast.LENGTH_SHORT).show();
                 Intent intent1 = new Intent(getContext(),BlackListActivity.class);
                 startActivity(intent1);
                 break;
@@ -191,7 +190,7 @@ public class FragmentContacts extends Fragment {
                     recyclerView.setLayoutManager(layoutManager);
                     adapter = new PeopleAdapter(peopleList);
                     recyclerView.setAdapter(adapter);
-                    Toast.makeText(getContext(),"Import suecceeded",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"成功导入",Toast.LENGTH_SHORT).show();
                 }
             }
 
