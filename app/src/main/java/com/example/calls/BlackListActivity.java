@@ -9,6 +9,7 @@
  **************************************************************************************************/
 package com.example.calls;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.widget.DrawerLayout;
@@ -32,21 +33,28 @@ public class BlackListActivity extends AppCompatActivity {
     private PeopleAdapter adapter;
     private DrawerLayout mDrawerLayout;
     private MyDataBaseHelper dbHelper;
+    private int BoF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_black_list);
-
+        Intent intent = getIntent();
+        BoF = intent.getIntExtra("BoF",0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_black_list);
         setSupportActionBar(toolbar);
-        setTitle("黑名单");
+        if(BoF==0) {
+            setTitle("黑名单");
+        }
+        else{
+            setTitle("家人");
+        }
         ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-        }
+//        if(actionBar != null){
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+//        }
 
 
         dbHelper = new MyDataBaseHelper(this,"PeopleStore.db",null,1);
@@ -72,8 +80,15 @@ public class BlackListActivity extends AppCompatActivity {
     private void iniPeoples(){
         peopleList.clear();
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from People where isBlack = ?",
-                new String[]{"1"});
+        Cursor cursor;
+        if(BoF==0) {
+            cursor = db.rawQuery("select * from People where isBlack = ?",
+                    new String[]{"1"});
+        }
+        else{
+            cursor = db.rawQuery("select * from People where not relationship = ?",
+                    new String[]{"无"});
+        }
         if (cursor.moveToFirst()){
             do{
                 String name = cursor.getString(cursor.getColumnIndex("name"));

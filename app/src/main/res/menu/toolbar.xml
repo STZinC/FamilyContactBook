@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="Backup"
-        android:id="@+id/backup"
-        android:icon="@drawable/ic_backup_white_24dp"
-        app:showAsAction="always"
-        />
-    <item
         android:title="Add"
         android:id="@+id/add"
         android:icon="@drawable/ic_person_add_white_24dp"
         app:showAsAction="ifRoom"
+        />
+    <item
+        android:title="Family"
+        android:id="@+id/family"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        app:showAsAction="always"
         />
     <item
         android:title="黑名单"

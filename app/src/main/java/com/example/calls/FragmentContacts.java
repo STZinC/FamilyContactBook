@@ -92,8 +92,10 @@ public class FragmentContacts extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
-            case R.id.backup:
-                Toast.makeText(getContext(),"You clicked Backup",Toast.LENGTH_SHORT).show();
+            case R.id.family:
+                Intent intent2 = new Intent(getContext(),BlackListActivity.class);
+                intent2.putExtra("BoF",1);
+                startActivity(intent2);
                 break;
             case R.id.add:
                 Intent intent = new Intent(getContext(),AddEditContactActivity.class);
@@ -101,6 +103,7 @@ public class FragmentContacts extends Fragment {
                 break;
             case R.id.black_list:
                 Intent intent1 = new Intent(getContext(),BlackListActivity.class);
+                intent1.putExtra("BoF",0);
                 startActivity(intent1);
                 break;
             case R.id.import_from_system:
