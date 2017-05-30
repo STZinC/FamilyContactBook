@@ -14,12 +14,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -35,6 +40,8 @@ import com.example.calls.Adapter.WeatherInfo;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import okhttp3.OkHttpClient;
@@ -53,6 +60,9 @@ public class ContactDetailActivity extends AppCompatActivity {
     WeatherInfo weatherInfo;
     TextView locationView;
     private static final String TAG = "ContactDetailActivity";
+    //头像文件
+    private File filesave;
+    private Uri imageSaveUri;
     //定义异步更新UI，实现线程中更新UI
     public static final int UPDATE_LOACTION = 1;
     public static final int UPDATE_WEATHER = 2;
@@ -70,6 +80,15 @@ public class ContactDetailActivity extends AppCompatActivity {
         relationshipView = (TextView) findViewById(R.id.contact_detail_relationship);
         moveBlack = (Button) findViewById(R.id.move_to_out_black);
         locationView = (TextView) findViewById(R.id.contact_detail_phone_location);
+
+        filesave =  new File(Environment.getExternalStorageDirectory(), "save.jpg");
+        if(Build.VERSION.SDK_INT >= 24){
+            imageSaveUri = FileProvider.getUriForFile(this,"com.yanyangma.FamilyPhoneBook.fileprovider",filesave);
+        }
+        else{
+            imageSaveUri = Uri.fromFile(filesave);
+        }
+
         iniData();
         iniWeather();
         iniSweetMessageButton();
@@ -127,7 +146,15 @@ public class ContactDetailActivity extends AppCompatActivity {
                 //resID = getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
                 String location = qcursor.getString(qcursor.getColumnIndex("phoneLocation"));
                 qcursor.close();
-                avatorView.setImageResource(resID);
+                //avatorView.setImageResource(resID);
+
+                try {
+                Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageSaveUri));
+                avatorView.setImageBitmap(photo1);
+                }catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }
+
                 nameView.setText(name);
                 phoneView.setText(phone);
                 relationshipView.setText(relationship);
@@ -178,7 +205,13 @@ public class ContactDetailActivity extends AppCompatActivity {
             if(location==null) {
                 findLocation(phone);
             }
-            avatorView.setImageResource(resID);
+            //avatorView.setImageResource(resID);
+            try {
+                Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageSaveUri));
+                avatorView.setImageBitmap(photo1);
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
             nameView.setText(name);
             phoneView.setText(phone);
             relationshipView.setText(relationship);

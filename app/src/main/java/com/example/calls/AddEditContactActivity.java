@@ -106,7 +106,7 @@ public class AddEditContactActivity extends AppCompatActivity {
                 file.delete();
             }
             if (filesave.exists()) {
-                filesave.delete();
+                //filesave.delete();
             }
             file.createNewFile();
             filesave.createNewFile();
@@ -322,7 +322,7 @@ public class AddEditContactActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
         file.delete();//设置成功后清除之前的照片文件
-        filesave.delete();//设置成功后清除之前的照片文件
+        //filesave.delete();//设置成功后清除之前的照片文件
 
     }
 
