@@ -122,7 +122,9 @@ public class ContactDetailActivity extends AppCompatActivity {
                 final String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
                 String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
                 final Integer isBlack = qcursor.getInt(qcursor.getColumnIndex("isBlack"));
-                int resID = R.drawable.avatar_boy;//getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
+                int resID;
+                resID = R.drawable.avatar_boy;
+                //resID = getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
                 String location = qcursor.getString(qcursor.getColumnIndex("phoneLocation"));
                 qcursor.close();
                 avatorView.setImageResource(resID);
@@ -167,7 +169,9 @@ public class ContactDetailActivity extends AppCompatActivity {
             final String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
             String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
             final Integer isBlack = qcursor.getInt(qcursor.getColumnIndex("isBlack"));
-            int resID = R.drawable.avatar_boy;//getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
+            int resID;
+            //resID = R.drawable.avatar_boy;
+            resID = getResources().getIdentifier("avatar_boy", "drawable", "com.yanyangma.FamilyPhoneBook");
             String location = qcursor.getString(qcursor.getColumnIndex("phoneLocation"));
             qcursor.close();
             locationView.setText(location);

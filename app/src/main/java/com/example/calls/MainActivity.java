@@ -56,10 +56,24 @@ public class MainActivity extends AppCompatActivity{
         startIntent = new Intent(this,BlackNumberService.class);
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) !=
+                PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) !=
+                PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) !=
+                PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) !=
+                PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_CONTACTS,
-                            Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE}, 1);
+                    new String[]{Manifest.permission.READ_CALL_LOG,
+                            Manifest.permission.READ_CONTACTS,
+                            Manifest.permission.CALL_PHONE,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
 
         else {
@@ -94,13 +108,15 @@ public class MainActivity extends AppCompatActivity{
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         &&grantResults[1] == PackageManager.PERMISSION_GRANTED
                         &&grantResults[2] == PackageManager.PERMISSION_GRANTED
-                        &&grantResults[3] == PackageManager.PERMISSION_GRANTED){
+                        &&grantResults[3] == PackageManager.PERMISSION_GRANTED
+                        &&grantResults[4] == PackageManager.PERMISSION_GRANTED
+                        &&grantResults[5] == PackageManager.PERMISSION_GRANTED){
                     Log.d("MainActivity","Start service");
                     startService(startIntent);
 
                 }else{
-                    Toast.makeText(this, "You denied the permission 1",Toast.LENGTH_SHORT).show();
-                    Log.d("Permission:","You denied the permission 1");
+                    Toast.makeText(this, "You denied the permission",Toast.LENGTH_SHORT).show();
+                    Log.d("Permission:","You denied the permission");
                     finish();
                 }
                 break;
