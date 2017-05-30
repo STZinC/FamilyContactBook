@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static android.R.attr.bitmap;
+import static android.R.attr.popupCharacters;
 
 public class AddEditContactActivity extends AppCompatActivity {
     private EditText editName;
@@ -53,6 +54,7 @@ public class AddEditContactActivity extends AppCompatActivity {
     private String index;
     private boolean isAvatarChange = false;
     private final int  ALBUM_OK = 1, CAMERA_OK = 2,CUT_OK = 3;
+    private Intent avatarData;
     private File file;
     private File filesave;
     private Uri imageUri;
@@ -99,29 +101,29 @@ public class AddEditContactActivity extends AppCompatActivity {
         dbHelper = new MyDataBaseHelper(this,"PeopleStore.db",null,1);
 
         // 定义拍照后存放图片的文件位置和名称，使用完毕后可以方便删除
-        file = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
-        filesave =  new File(Environment.getExternalStorageDirectory(), "save.jpg");
-        try {
-            if (file.exists()) {
-                file.delete();
-            }
-            if (filesave.exists()) {
-                //filesave.delete();
-            }
-            file.createNewFile();
-            filesave.createNewFile();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        // 清空之前的文件
-        if(Build.VERSION.SDK_INT >= 24){
-            imageUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
-            imageSaveUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",filesave);
-        }
-        else{
-            imageUri = Uri.fromFile(file);
-            imageSaveUri = Uri.fromFile(filesave);
-        }
+//        file = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+//        filesave =  new File(Environment.getExternalStorageDirectory(), "save.jpg");
+//        try {
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//            if (filesave.exists()) {
+//                //filesave.delete();
+//            }
+//            file.createNewFile();
+//            filesave.createNewFile();
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        // 清空之前的文件
+//        if(Build.VERSION.SDK_INT >= 24){
+//            imageUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
+//            imageSaveUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",filesave);
+//        }
+//        else{
+//            imageUri = Uri.fromFile(file);
+//            imageSaveUri = Uri.fromFile(filesave);
+//        }
 
         Intent intent = getIntent();
         index = intent.getStringExtra("index");
@@ -134,7 +136,25 @@ public class AddEditContactActivity extends AppCompatActivity {
                 String name = qcursor.getString(qcursor.getColumnIndex("name"));
                 String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
                 String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
-                int resID = R.drawable.avatar_boy;//getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
+                Integer photoId = qcursor.getInt(qcursor.getColumnIndex("photoId"));
+                if(photoId != null){
+                    String filename = photoId.toString()+".jpg";
+                    file = new File(Environment.getExternalStorageDirectory(), filename);
+                    imageUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
+                    if(file.exists()) {
+                        try {
+                            Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                            avatorView.setImageBitmap(photo1);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            avatorView.setImageResource(R.drawable.avatar_boy);
+                        }
+                    }
+                    else;
+                }
+                else{
+                    avatorView.setImageResource(R.drawable.avatar_boy);
+                }
                 qcursor.close();
                 String[] rel = getResources().getStringArray(R.array.relationship);
                 editName.setText(name);
@@ -146,7 +166,6 @@ public class AddEditContactActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                Log.d("Position",pos.toString());
                 editRelationship.setSelection(pos);
             }
         }
@@ -177,9 +196,46 @@ public class AddEditContactActivity extends AppCompatActivity {
         String Name = editName.getText().toString();
         String PhoneNumber = editPhoneNumber.getText().toString();
         String RelationShip = editRelationship.getSelectedItem().toString();
+        Integer photoId = (Name+PhoneNumber).hashCode();
+        if(isAvatarChange){
+            filesave =  new File(Environment.getExternalStorageDirectory(), photoId.toString()+".jpg");
+            try {
+                if (filesave.exists()) {
+                    filesave.delete();
+                }
+                filesave.createNewFile();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            FileOutputStream fos = null;
+            try {
+                Bundle extras = avatarData.getExtras();
+                Bitmap photo = extras.getParcelable("data");
+                fos = new FileOutputStream(filesave);
+                photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                        Log.d("Save","Save successfully");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
-            db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
-                    new String[]{Name, PhoneNumber, RelationShip, "0"});
+            if(isAvatarChange){
+                db.execSQL("insert into People (name, phoneNumber1, relationship, isBlack, photoId) values(?,?,?,?,?)",
+                        new String[]{Name, PhoneNumber, RelationShip, "0", photoId.toString()});
+            }
+            else {
+                db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
+                        new String[]{Name, PhoneNumber, RelationShip, "0"});
+            }
             Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
 
         }
@@ -233,7 +289,7 @@ public class AddEditContactActivity extends AppCompatActivity {
                  * 非空判断大家一定要验证，如果不验证的话， 在剪裁之后如果发现不满意，
                  * 要重新裁剪，丢弃 当前功能时，会报NullException
                  */
-                if(file.exists()) Log.d("Final file exit","exist");
+                //if(file.exists()) Log.d("Final file exit","exist");
                 //if (data != null) {
                     setPicToView(data);
                     Log.d("Cut not null","not null");
@@ -290,26 +346,30 @@ public class AddEditContactActivity extends AppCompatActivity {
     private void setPicToView(Intent picdata) {
         Bundle extras = picdata.getExtras();
         if (extras != null) {
+            avatarData = picdata;
             Bitmap photo = extras.getParcelable("data");
             Drawable drawable = new BitmapDrawable(photo);
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(filesave);
-                photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                fos.flush();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                        Log.d("Save","Save successfully");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
             avatorView.setImageDrawable(drawable);
+            isAvatarChange = true;
+//
+//            FileOutputStream fos = null;
+//            try {
+//                fos = new FileOutputStream(filesave);
+//                photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//                fos.flush();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (fos != null) {
+//                    try {
+//                        fos.close();
+//                        Log.d("Save","Save successfully");
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+
         }
 
 
@@ -321,7 +381,7 @@ public class AddEditContactActivity extends AppCompatActivity {
 //        }catch (FileNotFoundException e){
 //            e.printStackTrace();
 //        }
-        file.delete();//设置成功后清除之前的照片文件
+   //     file.delete();//设置成功后清除之前的照片文件
         //filesave.delete();//设置成功后清除之前的照片文件
 
     }

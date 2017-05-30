@@ -215,7 +215,8 @@ public class ContactDetailActivity extends AppCompatActivity {
             nameView.setText(name);
             phoneView.setText(phone);
             relationshipView.setText(relationship);
-
+            Integer ha = (name+phone).hashCode();
+            Log.d("Hash name and phone",ha.toString());
             if(isBlack == 1) moveBlack.setText("移出黑名单");
 
             moveBlack.setOnClickListener(new View.OnClickListener(){
