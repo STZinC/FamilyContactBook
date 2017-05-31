@@ -409,17 +409,17 @@ public class ContactDetailActivity extends AppCompatActivity {
                 final String finalRelationship = relationship;
                 //联网查找天气并生成对应预报短信
                 String sweetMessage = new String();
-                if (finalRelationship!="无")
-                    sweetMessage+=finalRelationship;
+                if (!finalRelationship.equals("无") )
+                    sweetMessage+=finalRelationship+",";
                 else if(finalName!=null)
-                    sweetMessage+=finalName;
+                    sweetMessage+=finalName+",";
                 String weatherMessage = weatherInfo.getWeatherMessage();
                 if (weatherMessage == null){
                     Toast.makeText(ContactDetailActivity.this, "未查找到相关天气信息，请重试",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sweetMessage+= ","+weatherMessage;
+                sweetMessage+= weatherMessage;
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"+phoneNum));
                 intent.putExtra("sms_body", sweetMessage);
                 startActivity(intent);
