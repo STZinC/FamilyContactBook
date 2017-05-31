@@ -61,8 +61,8 @@ public class ContactDetailActivity extends AppCompatActivity {
     TextView locationView;
     private static final String TAG = "ContactDetailActivity";
     //头像文件
-    private File filesave;
-    private Uri imageSaveUri;
+    private File file;
+    private Uri imageUri;
     //定义异步更新UI，实现线程中更新UI
     public static final int UPDATE_LOACTION = 1;
     public static final int UPDATE_WEATHER = 2;
@@ -80,14 +80,6 @@ public class ContactDetailActivity extends AppCompatActivity {
         relationshipView = (TextView) findViewById(R.id.contact_detail_relationship);
         moveBlack = (Button) findViewById(R.id.move_to_out_black);
         locationView = (TextView) findViewById(R.id.contact_detail_phone_location);
-
-        filesave =  new File(Environment.getExternalStorageDirectory(), "save.jpg");
-        if(Build.VERSION.SDK_INT >= 24){
-            imageSaveUri = FileProvider.getUriForFile(this,"com.yanyangma.FamilyPhoneBook.fileprovider",filesave);
-        }
-        else{
-            imageSaveUri = Uri.fromFile(filesave);
-        }
 
         iniData();
         iniWeather();
@@ -141,18 +133,27 @@ public class ContactDetailActivity extends AppCompatActivity {
                 final String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
                 String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
                 final Integer isBlack = qcursor.getInt(qcursor.getColumnIndex("isBlack"));
-                int resID;
-                resID = R.drawable.avatar_boy;
-                //resID = getResources().getIdentifier("avatar_boy", "drawable", "com.example.calls");
+                Integer photoId = qcursor.getInt(qcursor.getColumnIndex("photoId"));
                 String location = qcursor.getString(qcursor.getColumnIndex("phoneLocation"));
                 qcursor.close();
-                //avatorView.setImageResource(resID);
 
-                try {
-                Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageSaveUri));
-                avatorView.setImageBitmap(photo1);
-                }catch (FileNotFoundException e){
-                    e.printStackTrace();
+                if(photoId != 0){
+                    String filename = photoId.toString()+".jpg";
+                    file = new File(Environment.getExternalStorageDirectory(), filename);
+                    imageUri = FileProvider.getUriForFile(this,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
+                    if(file.exists()) {
+                        try {
+                            Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                            avatorView.setImageBitmap(photo1);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            avatorView.setImageResource(R.drawable.avatar_boy);
+                        }
+                    }
+                    else;
+                }
+                else{
+                    avatorView.setImageResource(R.drawable.avatar_boy);
                 }
 
                 nameView.setText(name);
@@ -196,22 +197,32 @@ public class ContactDetailActivity extends AppCompatActivity {
             final String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
             String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
             final Integer isBlack = qcursor.getInt(qcursor.getColumnIndex("isBlack"));
-            int resID;
-            //resID = R.drawable.avatar_boy;
-            resID = getResources().getIdentifier("avatar_boy", "drawable", "com.yanyangma.FamilyPhoneBook");
+            Integer photoId = qcursor.getInt(qcursor.getColumnIndex("photoId"));
             String location = qcursor.getString(qcursor.getColumnIndex("phoneLocation"));
             qcursor.close();
+            if(photoId != 0){
+                String filename = photoId.toString()+".jpg";
+                file = new File(Environment.getExternalStorageDirectory(), filename);
+                imageUri = FileProvider.getUriForFile(this,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
+                if(file.exists()) {
+                    try {
+                        Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        avatorView.setImageBitmap(photo1);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        avatorView.setImageResource(R.drawable.avatar_boy);
+                    }
+                }
+                else;
+            }
+            else{
+                avatorView.setImageResource(R.drawable.avatar_boy);
+            }
             locationView.setText(location);
             if(location==null) {
                 findLocation(phone);
             }
-            //avatorView.setImageResource(resID);
-            try {
-                Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageSaveUri));
-                avatorView.setImageBitmap(photo1);
-            }catch (FileNotFoundException e){
-                e.printStackTrace();
-            }
+
             nameView.setText(name);
             phoneView.setText(phone);
             relationshipView.setText(relationship);

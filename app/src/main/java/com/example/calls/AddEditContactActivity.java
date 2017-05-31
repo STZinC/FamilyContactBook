@@ -59,6 +59,7 @@ public class AddEditContactActivity extends AppCompatActivity {
     private File filesave;
     private Uri imageUri;
     private Uri imageSaveUri;
+    private Integer photoId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,30 +101,6 @@ public class AddEditContactActivity extends AppCompatActivity {
         editRelationship = (Spinner) findViewById(R.id.edit_relationship);
         dbHelper = new MyDataBaseHelper(this,"PeopleStore.db",null,1);
 
-        // 定义拍照后存放图片的文件位置和名称，使用完毕后可以方便删除
-//        file = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
-//        filesave =  new File(Environment.getExternalStorageDirectory(), "save.jpg");
-//        try {
-//            if (file.exists()) {
-//                file.delete();
-//            }
-//            if (filesave.exists()) {
-//                //filesave.delete();
-//            }
-//            file.createNewFile();
-//            filesave.createNewFile();
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-//        // 清空之前的文件
-//        if(Build.VERSION.SDK_INT >= 24){
-//            imageUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
-//            imageSaveUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",filesave);
-//        }
-//        else{
-//            imageUri = Uri.fromFile(file);
-//            imageSaveUri = Uri.fromFile(filesave);
-//        }
 
         Intent intent = getIntent();
         index = intent.getStringExtra("index");
@@ -136,8 +113,8 @@ public class AddEditContactActivity extends AppCompatActivity {
                 String name = qcursor.getString(qcursor.getColumnIndex("name"));
                 String phone = qcursor.getString(qcursor.getColumnIndex("phoneNumber1"));
                 String relationship = qcursor.getString(qcursor.getColumnIndex("relationship"));
-                Integer photoId = qcursor.getInt(qcursor.getColumnIndex("photoId"));
-                if(photoId != null){
+                photoId = qcursor.getInt(qcursor.getColumnIndex("photoId"));
+                if(photoId != 0){
                     String filename = photoId.toString()+".jpg";
                     file = new File(Environment.getExternalStorageDirectory(), filename);
                     imageUri = FileProvider.getUriForFile(AddEditContactActivity.this,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
@@ -197,7 +174,67 @@ public class AddEditContactActivity extends AppCompatActivity {
         String PhoneNumber = editPhoneNumber.getText().toString();
         String RelationShip = editRelationship.getSelectedItem().toString();
         Integer photoId = (Name+PhoneNumber).hashCode();
-        if(isAvatarChange){
+        if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
+            if(isAvatarChange){
+                filesave =  new File(Environment.getExternalStorageDirectory(), photoId.toString()+".jpg");
+                try {
+                    if (filesave.exists()) {
+                        filesave.delete();
+                    }
+                    filesave.createNewFile();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                FileOutputStream fos = null;
+                try {
+                    Bundle extras = avatarData.getExtras();
+                    Bitmap photo = extras.getParcelable("data");
+                    fos = new FileOutputStream(filesave);
+                    photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (fos != null) {
+                        try {
+                            fos.close();
+                            Log.d("Save","Save successfully");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                db.execSQL("insert into People (name, phoneNumber1, relationship, isBlack, photoId) values(?,?,?,?,?)",
+                        new String[]{Name, PhoneNumber, RelationShip, "0", photoId.toString()});
+            }
+            else {
+                db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
+                        new String[]{Name, PhoneNumber, RelationShip, "0"});
+            }
+            Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+
+        }
+        else{
+            Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void editContact(){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String Name = editName.getText().toString();
+        String PhoneNumber = editPhoneNumber.getText().toString();
+        String RelationShip = editRelationship.getSelectedItem().toString();
+        if(photoId == 0){
+            photoId = (Name+PhoneNumber).hashCode();
+            db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ?, photoId = ? where id = ?",
+                    new String[]{Name, PhoneNumber, RelationShip, photoId.toString(), index.toString()});
+        }
+        else{
+            db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ? where id = ?",
+                    new String[]{Name, PhoneNumber, RelationShip, index.toString()});
+        }
+        if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
             filesave =  new File(Environment.getExternalStorageDirectory(), photoId.toString()+".jpg");
             try {
                 if (filesave.exists()) {
@@ -226,36 +263,7 @@ public class AddEditContactActivity extends AppCompatActivity {
                     }
                 }
             }
-        }
-        if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
-            if(isAvatarChange){
-                db.execSQL("insert into People (name, phoneNumber1, relationship, isBlack, photoId) values(?,?,?,?,?)",
-                        new String[]{Name, PhoneNumber, RelationShip, "0", photoId.toString()});
-            }
-            else {
-                db.execSQL("insert into People (name, phoneNumber1, relationship,isBlack) values(?,?,?,?)",
-                        new String[]{Name, PhoneNumber, RelationShip, "0"});
-            }
-            Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
 
-        }
-        else{
-            Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void editContact(){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String Name = editName.getText().toString();
-        String PhoneNumber = editPhoneNumber.getText().toString();
-        String RelationShip = editRelationship.getSelectedItem().toString();
-        if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
-            db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ? where id = ?",
-                    new String[]{Name, PhoneNumber, RelationShip, index.toString()});
-            if(isAvatarChange){
-
-            }
             Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -290,10 +298,10 @@ public class AddEditContactActivity extends AppCompatActivity {
                  * 要重新裁剪，丢弃 当前功能时，会报NullException
                  */
                 //if(file.exists()) Log.d("Final file exit","exist");
-                //if (data != null) {
+                if (data != null) {
                     setPicToView(data);
                     Log.d("Cut not null","not null");
-                //}
+                }
                 //else Log.d("Cut not null","null");
                 break;
             default:
@@ -351,39 +359,8 @@ public class AddEditContactActivity extends AppCompatActivity {
             Drawable drawable = new BitmapDrawable(photo);
             avatorView.setImageDrawable(drawable);
             isAvatarChange = true;
-//
-//            FileOutputStream fos = null;
-//            try {
-//                fos = new FileOutputStream(filesave);
-//                photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//                fos.flush();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                if (fos != null) {
-//                    try {
-//                        fos.close();
-//                        Log.d("Save","Save successfully");
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
 
         }
-
-
-//        try {
-//            Bitmap photo1 = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageSaveUri));
-//            avatorView.setImageBitmap(photo1);
-//            isAvatarChange = true;
-//            Log.d("Display","success");
-//        }catch (FileNotFoundException e){
-//            e.printStackTrace();
-//        }
-   //     file.delete();//设置成功后清除之前的照片文件
-        //filesave.delete();//设置成功后清除之前的照片文件
-
     }
 
 
