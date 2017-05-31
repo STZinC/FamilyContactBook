@@ -18,12 +18,14 @@ public class People implements Comparable<People>{
     private String Name;
     private String PhoneNumber;
     private String pinyin;
+    private Integer photoId;
     private char firstChar;
 
-    public People(String Name, String PhoneNumber, int id){
+    public People(String Name, String PhoneNumber, int id, Integer photoId){
         this.id = id;
         this.Name = Name;
         this.PhoneNumber = PhoneNumber;
+        this.photoId = photoId;
     }
 
     public String getPinyin() {
@@ -45,6 +47,7 @@ public class People implements Comparable<People>{
     }
     public String getPhoneNumber(){return PhoneNumber;}
     public int getId() {return id;}
+    public Integer getPhotoId(){return photoId;}
     public void setName(String name) {
         this.Name = name;
     }

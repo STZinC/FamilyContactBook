@@ -11,6 +11,11 @@ package com.example.calls.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,9 +25,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.calls.ContactDetailActivity;
+import com.example.calls.MainActivity;
 import com.example.calls.People;
 import com.example.calls.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -85,6 +93,27 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         holder.peopleName.setText(people.getName());
         holder.peoplePhoneNumber.setText(people.getPhoneNumber());
         holder.peopleAvator.setImageResource(R.drawable.avatar_boy);
+        Integer photoId = people.getPhotoId();
+        File file;
+        Uri imageUri;
+        if(photoId != 0){
+            String filename = photoId.toString()+".jpg";
+            file = new File(Environment.getExternalStorageDirectory(), filename);
+            imageUri = FileProvider.getUriForFile(mContext,"com.yanyangma.FamilyPhoneBook.fileprovider",file);
+            if(file.exists()) {
+                try {
+                    Bitmap photo1 = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(imageUri));
+                    holder.peopleAvator.setImageBitmap(photo1);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    holder.peopleAvator.setImageResource(R.drawable.avatar_boy);
+                }
+            }
+            else;
+        }
+        else{
+            holder.peopleAvator.setImageResource(R.drawable.avatar_boy);
+        }
     }
 
     @Override

@@ -127,7 +127,8 @@ public class FragmentContacts extends Fragment {
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 String phoneNumber1 = cursor.getString(cursor.getColumnIndex("phoneNumber1"));
                 int id = cursor.getInt(cursor.getColumnIndex("id"));
-                People person = new People(name,phoneNumber1,id);
+                int photoId= cursor.getInt(cursor.getColumnIndex("photoId"));
+                People person = new People(name,phoneNumber1,id,photoId);
                 person.setPinyin(HanziToPinyin.getPinYin(person.getName()));
                 peopleList.add(person);
             }while(cursor.moveToNext());
