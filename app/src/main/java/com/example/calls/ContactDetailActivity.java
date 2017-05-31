@@ -258,6 +258,11 @@ public class ContactDetailActivity extends AppCompatActivity {
         nameView.setText("Unknown");
         phoneView.setText(index.substring(4));
         relationshipView.setText("");
+        String location = null;
+        locationView.setText(location);
+        if(location==null) {
+            findLocation(index.substring(4));
+        }
         moveBlack.setVisibility(View.INVISIBLE);
 
     }
@@ -404,7 +409,7 @@ public class ContactDetailActivity extends AppCompatActivity {
                 final String finalRelationship = relationship;
                 //联网查找天气并生成对应预报短信
                 String sweetMessage = new String();
-                if (finalRelationship!=null)
+                if (finalRelationship!="无")
                     sweetMessage+=finalRelationship;
                 else if(finalName!=null)
                     sweetMessage+=finalName;
