@@ -145,6 +145,7 @@ public class AddEditContactActivity extends AppCompatActivity {
                 }
                 editRelationship.setSelection(pos);
             }
+            qcursor.close();
         }
 
     }
@@ -225,45 +226,52 @@ public class AddEditContactActivity extends AppCompatActivity {
         String Name = editName.getText().toString();
         String PhoneNumber = editPhoneNumber.getText().toString();
         String RelationShip = editRelationship.getSelectedItem().toString();
-        if(photoId == 0){
-            photoId = (Name+PhoneNumber).hashCode();
-            db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ?, photoId = ? where id = ?",
-                    new String[]{Name, PhoneNumber, RelationShip, photoId.toString(), index.toString()});
-        }
-        else{
-            db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ? where id = ?",
-                    new String[]{Name, PhoneNumber, RelationShip, index.toString()});
-        }
         if(!Name.isEmpty() && !PhoneNumber.isEmpty()) {
-            filesave =  new File(Environment.getExternalStorageDirectory(), photoId.toString()+".jpg");
-            try {
-                if (filesave.exists()) {
-                    filesave.delete();
+            if(photoId == 0){
+                if(isAvatarChange) {
+                    photoId = (Name + PhoneNumber).hashCode();
+                    db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ?, photoId = ? where id = ?",
+                            new String[]{Name, PhoneNumber, RelationShip, photoId.toString(), index.toString()});
                 }
-                filesave.createNewFile();
-            } catch (IOException e){
-                e.printStackTrace();
+                else{
+                    db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ? where id = ?",
+                            new String[]{Name, PhoneNumber, RelationShip, index.toString()});
+                }
             }
-            FileOutputStream fos = null;
-            try {
-                Bundle extras = avatarData.getExtras();
-                Bitmap photo = extras.getParcelable("data");
-                fos = new FileOutputStream(filesave);
-                photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                fos.flush();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                        Log.d("Save","Save successfully");
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            else{
+                db.execSQL("update People set name = ?, phoneNumber1 = ?, relationship = ? where id = ?",
+                        new String[]{Name, PhoneNumber, RelationShip, index.toString()});
+            }
+            if(isAvatarChange) {
+                filesave = new File(Environment.getExternalStorageDirectory(), photoId.toString() + ".jpg");
+                try {
+                    if (filesave.exists()) {
+                        filesave.delete();
+                    }
+                    filesave.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                FileOutputStream fos = null;
+                try {
+                    Bundle extras = avatarData.getExtras();
+                    Bitmap photo = extras.getParcelable("data");
+                    fos = new FileOutputStream(filesave);
+                    photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (fos != null) {
+                        try {
+                            fos.close();
+                            Log.d("Save", "Save successfully");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
-
             Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
         }
         else{
